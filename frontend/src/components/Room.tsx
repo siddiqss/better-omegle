@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Socket, io } from "socket.io-client";
 
-const URL = "https://better-omegle.onrender.com";
+const URL = "https://better-omegle-backend.onrender.com";
 
 const Room = ({
   name,
