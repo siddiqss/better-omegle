@@ -1,1 +1,1 @@
-## Better Omegle with WebRTC
+## Better Omegle with WebRTC(P2P)
