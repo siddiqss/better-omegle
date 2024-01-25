@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import { Socket, io } from "socket.io-client";
 
 const URL = "https://better-omegle.onrender.com";
@@ -13,21 +12,20 @@ const Room = ({
   localAudioTrack: MediaStreamTrack | null;
   localVideoTrack: MediaStreamTrack | null;
 }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
   const [lobby, setLobby] = useState(true);
-  const [socket, setSocket] = useState<null | Socket>(null);
-  const [sendingPc, setSendingPc] = useState<null | RTCPeerConnection>(null);
-  const [receivingPc, setReceivingPc] = useState<null | RTCPeerConnection>(
+  const [, setSocket] = useState<null | Socket>(null);
+  const [, setSendingPc] = useState<null | RTCPeerConnection>(null);
+  const [, setReceivingPc] = useState<null | RTCPeerConnection>(
     null
   );
-  const [remoteVideoTrack, setRemoteVideoTrack] =
+  const [, setRemoteVideoTrack] =
     useState<MediaStreamTrack | null>(null);
-  const [remoteAudioTrack, setRemoteAudioTrack] =
+  const [, setRemoteAudioTrack] =
     useState<MediaStreamTrack | null>(null);
-  const [remoteMediaStream, setRemoteMediaStream] =
+  const [, setRemoteMediaStream] =
     useState<MediaStream | null>(null);
-  const remoteVideoRef = useRef<HTMLVideoElement>();
-  const localVideoRef = useRef<HTMLVideoElement>();
+  const remoteVideoRef = useRef<HTMLVideoElement>(null);
+  const localVideoRef = useRef<HTMLVideoElement>(null);
   const [remoteName, setRemoteName] = useState("");
 
 
@@ -99,9 +97,10 @@ const Room = ({
       setRemoteMediaStream(stream);
       // trickle ice
       setReceivingPc(pc);
+        //@ts-ignore
       window.pcr = pc;
 
-      pc.ontrack = (e) => {
+      pc.ontrack = () => {
         alert("ontrack");
         // console.error("inside ontrack");
         // const {track, type} = e;
@@ -170,7 +169,7 @@ const Room = ({
       // socket.emit("name", name)
     });
 
-    socket.on("answer", ({ roomId, sdp: remoteSdp }) => {
+    socket.on("answer", ({ sdp: remoteSdp }) => {
       setLobby(false);
       setSendingPc((pc) => {
         pc?.setRemoteDescription(remoteSdp);
