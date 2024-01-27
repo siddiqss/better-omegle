@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import React from "react";
 import { Socket, io } from "socket.io-client";
 
-const URL = "https://better-omegle-backend.onrender.com";
+// const URL = "https://better-omegle-backend.onrender.com";
+const URL = "http://localhost:3000";
 
 const Room = ({
   name,
@@ -15,19 +17,13 @@ const Room = ({
   const [lobby, setLobby] = useState(true);
   const [, setSocket] = useState<null | Socket>(null);
   const [, setSendingPc] = useState<null | RTCPeerConnection>(null);
-  const [, setReceivingPc] = useState<null | RTCPeerConnection>(
-    null
-  );
-  const [, setRemoteVideoTrack] =
-    useState<MediaStreamTrack | null>(null);
-  const [, setRemoteAudioTrack] =
-    useState<MediaStreamTrack | null>(null);
-  const [, setRemoteMediaStream] =
-    useState<MediaStream | null>(null);
+  const [, setReceivingPc] = useState<null | RTCPeerConnection>(null);
+  const [, setRemoteVideoTrack] = useState<MediaStreamTrack | null>(null);
+  const [, setRemoteAudioTrack] = useState<MediaStreamTrack | null>(null);
+  const [, setRemoteMediaStream] = useState<MediaStream | null>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const [remoteName, setRemoteName] = useState("");
-
 
   useEffect(() => {
     const socket = io(URL);
@@ -35,13 +31,12 @@ const Room = ({
 
     socket.emit("name", name);
 
-
     socket.on("send-offer", async ({ roomId, user1Name, user2Name }) => {
-      console.log(user1Name, user2Name)
+      console.log(user1Name, user2Name);
 
       console.log("sending offer");
 
-      setRemoteName(user1Name||user2Name)
+      setRemoteName(user1Name || user2Name);
       setLobby(false);
       const pc = new RTCPeerConnection();
 
@@ -97,7 +92,7 @@ const Room = ({
       setRemoteMediaStream(stream);
       // trickle ice
       setReceivingPc(pc);
-        //@ts-ignore
+      //@ts-ignore
       window.pcr = pc;
 
       pc.ontrack = () => {
@@ -218,7 +213,7 @@ const Room = ({
   }, []);
 
   useEffect(() => {
-    console.log("this occurs")
+    console.log("this occurs");
     if (localVideoRef.current) {
       if (localVideoTrack) {
         localVideoRef.current.srcObject = new MediaStream([localVideoTrack]);
@@ -227,18 +222,37 @@ const Room = ({
     }
   }, [localVideoRef]);
 
-  console.log(remoteName)
-
+  console.log(localAudioTrack);
+  console.log(localVideoTrack);
 
   return (
-    <div>
-      Hi {name}
-      <video autoPlay width={400} height={400} ref={localVideoRef} />
+    <div className="m-10">
+      <div className="flex gap-4">
+        <div>
+          <div className="mx-2 text-2xl font-bold">Hi {name}</div>
+          <div className="w-[600px] h-auto">
+            <video
+              autoPlay
+              className="w-full h-auto rounded-2xl border-2"
+              ref={localVideoRef}
+            />
+          </div>
+        </div>
+        <div>
+          {remoteName && <div className="mx-2 text-2xl font-bold">{remoteName}</div>}
+          <div className="w-[600px] h-auto ">
+            <video
+              autoPlay
+              className="w-full h-auto rounded-2xl border-2"
+              ref={remoteVideoRef}
+            />
+          </div>
+        </div>
+      </div>
+
       {lobby ? "Waiting to connect you to someone" : null}
-      <video autoPlay width={400} height={400} ref={remoteVideoRef} />
-      {remoteName && `The other person: ${remoteName}`}
     </div>
   );
 };
 
-export default Room
+export default Room;
