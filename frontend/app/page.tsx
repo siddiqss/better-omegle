@@ -45,6 +45,8 @@ const Home = () => {
           <div className="w-[600px] h-auto ">
             <video
               autoPlay
+              playsInline
+              // muted
               ref={videoRef}
               className="w-full h-auto rounded-2xl border-2"
             ></video>
