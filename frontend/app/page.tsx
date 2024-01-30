@@ -3,9 +3,12 @@ import { Suspense, useRef, useState } from "react";
 import React from "react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
+import { Alert, AlertTitle } from "../components/ui/alert";
 
 import Room from "../components/Room";
+import Error from "../components/Error";
 import Loading from "./loading";
+import { getLocalAudioVideo } from "@/lib/utils";
 
 const Home = () => {
   const [name, setName] = useState("");
@@ -19,15 +22,10 @@ const Home = () => {
   const [joined, setJoined] = useState(false);
 
   const getCam = async () => {
-    const stream = await window.navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: true,
-    });
-    // MediaStream
-    const audioTrack = stream.getAudioTracks()[0];
-    const videoTrack = stream.getVideoTracks()[0];
+    const [audioTrack, videoTrack] = await getLocalAudioVideo();
     setLocalAudioTrack(audioTrack);
     setlocalVideoTrack(videoTrack);
+
     if (!videoRef.current) {
       return;
     }
@@ -35,7 +33,6 @@ const Home = () => {
     videoRef.current.srcObject = new MediaStream([videoTrack, audioTrack]);
     videoRef.current.play();
     setMirror(true);
-    // MediaStream
   };
 
   if (!joined) {
@@ -57,7 +54,7 @@ const Home = () => {
         <div>
           {mirror == false ? (
             <div className="flex gap-2 m-2 items-center">
-              <p>Want to see how you look? Turn mirror on</p>
+              <p>Mirror?</p>
               <Button
                 onClick={() => {
                   if (videoRef && videoRef.current) {
@@ -70,11 +67,11 @@ const Home = () => {
             </div>
           ) : (
             <div className="flex items-center m-2 gap-2">
-              <p>Turn mirror off</p>
+              <p>Mirror?</p>
               <Button
                 onClick={async () => {
-                  localVideoTrack?.stop();
                   localAudioTrack?.stop();
+                  localVideoTrack?.stop();
                   setMirror(false);
                 }}
               >
@@ -86,6 +83,7 @@ const Home = () => {
         <div className="flex items-center gap-2 m-2">
           <Input
             type="text"
+            required
             placeholder="Enter name"
             onChange={(e) => {
               e.preventDefault();
@@ -93,10 +91,13 @@ const Home = () => {
             }}
           ></Input>
           <Button
-            onClick={() => {
-              getCam();
-
-              setJoined(true);
+            onClick={async () => {
+              if (name !== "") {
+                if (videoRef && videoRef.current) {
+                  await getCam();
+                }
+                setJoined(true);
+              }
             }}
           >
             Join

@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import React from "react";
 import { Socket, io } from "socket.io-client";
 
-const URL = "https://better-omegle-backend.onrender.com";
-// const URL = "http://localhost:3000";
+// const URL = "https://better-omegle-backend.onrender.com";
+const URL = "http://localhost:3000";
 
 const Room = ({
   name,
@@ -213,7 +213,7 @@ const Room = ({
   }, []);
 
   useEffect(() => {
-    console.log("this occurs");
+    console.log("localvideo ref");
     if (localVideoRef.current) {
       if (localVideoTrack) {
         localVideoRef.current.srcObject = new MediaStream([localVideoTrack]);
@@ -222,8 +222,7 @@ const Room = ({
     }
   }, [localVideoRef]);
 
-  console.log(localAudioTrack);
-  console.log(localVideoTrack);
+
 
   return (
     <div className="m-10">
