@@ -42,13 +42,13 @@ const Home = () => {
           Better Omegle - Meet Strangers Online
         </h1>
         <Suspense fallback={<Loading />}>
-          <div className="w-full sm:max-w-[600px] h-auto ">
+          <div className="w-full sm:max-w-[600px]">
             <video
               autoPlay
               playsInline
               // muted
               ref={videoRef}
-              className="w-full h-auto rounded-2xl border-2"
+              className="w-full max-h-[450px] rounded-2xl border-2"
             ></video>
           </div>
         </Suspense>

@@ -226,11 +226,11 @@ const Room = ({
       <>
         <div>
           <div className="mx-2 text-2xl font-bold self-start">{name}</div>
-          <div className="w-full sm:max-w-[600px] h-auto ">
+          <div className="w-full sm:max-w-[600px] ">
             <video
               autoPlay
               playsInline
-              className="w-full h-auto rounded-2xl border-2"
+              className="w-full max-h-[450px] rounded-2xl border-2"
               ref={localVideoRef}
             />
           </div>
@@ -239,11 +239,11 @@ const Room = ({
           {/* {remoteName && ( */}
             <>
               <div className="mx-2 text-2xl font-bold self-start">{remoteName}</div>
-              <div className="w-full sm:max-w-[600px] h-auto ">
+              <div className="w-full sm:max-w-[600px] ">
                 <video
                   autoPlay
                   playsInline
-                  className="w-full h-auto rounded-2xl border-2"
+                  className="w-full max-h-[450px] rounded-2xl border-2"
                   ref={remoteVideoRef}
                 />
               </div>
