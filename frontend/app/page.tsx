@@ -37,12 +37,12 @@ const Home = () => {
 
   if (!joined) {
     return (
-      <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center px-4 sm:px-0">
         <h1 className="text-2xl font-bold my-8">
           Better Omegle - Meet Strangers Online
         </h1>
         <Suspense fallback={<Loading />}>
-          <div className="w-[600px] h-auto ">
+          <div className="w-full sm:max-w-[600px] h-auto ">
             <video
               autoPlay
               playsInline

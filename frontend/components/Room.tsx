@@ -221,34 +221,38 @@ const Room = ({
     }
   }, [localVideoRef]);
 
-
-
   return (
-    <div className="m-10">
-      <div className="flex gap-4">
+    <div className="flex gap-4 flex-col sm:flex-row px-4 sm:px-0 mt-10 sm:m-10 w-full items-center justify-center">
+      <>
         <div>
-          <div className="mx-2 text-2xl font-bold">Hi {name}</div>
-          <div className="w-[600px] h-auto">
+          <div className="mx-2 text-2xl font-bold self-start">{name}</div>
+          <div className="w-full sm:max-w-[600px] h-auto ">
             <video
               autoPlay
+              playsInline
               className="w-full h-auto rounded-2xl border-2"
               ref={localVideoRef}
             />
           </div>
         </div>
         <div>
-          {remoteName && <div className="mx-2 text-2xl font-bold">{remoteName}</div>}
-          <div className="w-[600px] h-auto ">
-            <video
-              autoPlay
-              className="w-full h-auto rounded-2xl border-2"
-              ref={remoteVideoRef}
-            />
-          </div>
+          {/* {remoteName && ( */}
+            <>
+              <div className="mx-2 text-2xl font-bold self-start">{remoteName}</div>
+              <div className="w-full sm:max-w-[600px] h-auto ">
+                <video
+                  autoPlay
+                  playsInline
+                  className="w-full h-auto rounded-2xl border-2"
+                  ref={remoteVideoRef}
+                />
+              </div>
+            </>
+          {/* )} */}
         </div>
-      </div>
+      </>
 
-      {lobby ? "Waiting to connect you to someone" : null}
+      {lobby ? <p>Waiting to connect you to someone</p> : null}
     </div>
   );
 };
