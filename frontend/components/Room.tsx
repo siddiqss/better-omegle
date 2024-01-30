@@ -2,8 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import React from "react";
 import { Socket, io } from "socket.io-client";
 
-// const URL = "https://better-omegle-backend.onrender.com";
-const URL = "http://localhost:3000";
+const URL = process.env.NEXT_PUBLIC_BACKEND_URL!;
 
 const Room = ({
   name,
